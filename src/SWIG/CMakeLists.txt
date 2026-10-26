@@ -35,11 +35,19 @@ ADD_DEFINITIONS(
   ${PYTHON_DEFINITIONS}
 )
 
-# libraries to link to
-SET(_link_LIBRARIES
-  StudyData
-  ${PYTHON_LIBRARIES}
-)
+SET(_link_LIBRARIES)
+IF(NOT APPLE)
+    # libraries to link to
+    SET(_link_LIBRARIES
+        StudyData
+    )
+    LIST(APPEND _link_LIBRARIES ${PYTHON_LIBRARIES})
+ELSE()
+    SET(_link_LIBRARIES
+        StudyData
+         ${PYTHON_LIBRARIES}
+    )
+ENDIF(NOT APPLE)
 
 # --- headers ---
 
@@ -85,6 +93,12 @@ SWIG_CHECK_GENERATION(StudyData_Swig)
 IF(WIN32)
   SET_TARGET_PROPERTIES(_StudyData_Swig PROPERTIES DEBUG_OUTPUT_NAME _StudyData_Swig_d)
 ENDIF(WIN32)
+
+IF(APPLE)
+  SET_TARGET_PROPERTIES(_StudyData_Swig PROPERTIES
+    SUFFIX ".so"
+    LINK_FLAGS "-undefined dynamic_lookup")
+ENDIF(APPLE)
 
 INSTALL(TARGETS _StudyData_Swig DESTINATION ${SALOME_INSTALL_LIBS})
 

@@ -35,6 +35,7 @@ SET(_idl_include_dirs
 
 SET(_idl_link_flags
   ${KERNEL_SalomeIDLKernel}
+  ${GEOM_SalomeIDLGEOM}
 )
 
 OMNIORB_ADD_MODULE(SalomeIDLSHAPERSTUDY "${SalomeIDLSHAPERSTUDY_IDLSOURCES}" "${_idl_include_dirs}" "${_idl_link_flags}")
