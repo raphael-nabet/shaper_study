@@ -35,19 +35,11 @@ ADD_DEFINITIONS(
   ${PYTHON_DEFINITIONS}
 )
 
-SET(_link_LIBRARIES)
-IF(NOT APPLE)
-    # libraries to link to
-    SET(_link_LIBRARIES
-        StudyData
-    )
-    LIST(APPEND _link_LIBRARIES ${PYTHON_LIBRARIES})
-ELSE()
-    SET(_link_LIBRARIES
-        StudyData
-         ${PYTHON_LIBRARIES}
-    )
-ENDIF(NOT APPLE)
+# libraries to link to
+SET(_link_LIBRARIES
+  StudyData
+  ${PYTHON_LIBRARIES}
+)
 
 # --- headers ---
 
@@ -95,9 +87,9 @@ IF(WIN32)
 ENDIF(WIN32)
 
 IF(APPLE)
-  SET_TARGET_PROPERTIES(_StudyData_Swig PROPERTIES
-    SUFFIX ".so"
-    LINK_FLAGS "-undefined dynamic_lookup")
+  # Python extension module: symbols resolved at load time
+  SET_TARGET_PROPERTIES(_StudyData_Swig PROPERTIES SUFFIX ".so")
+  SET_PROPERTY(TARGET _StudyData_Swig APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
 ENDIF(APPLE)
 
 INSTALL(TARGETS _StudyData_Swig DESTINATION ${SALOME_INSTALL_LIBS})
